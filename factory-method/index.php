@@ -6,7 +6,44 @@ interface Transport
 }
 
 
-class Truck implements Transport
+class TruckA implements Transport
+{
+
+    public function deliver($place)
+    {
+        return $place;
+    }
+
+    public function someMethodA1()
+    {
+        return 'some thing A1';
+    }
+
+    public function someMethodA2()
+    {
+        return 'some thing A2';
+    }
+}
+class TruckB implements Transport
+{
+
+    public function deliver($place)
+    {
+        return $place;
+    }
+
+    public function someMethodB1()
+    {
+        return 'some thing B1';
+    }
+
+    public function someMethodB2()
+    {
+        return 'some thing B2';
+    }
+}
+
+class ShipA implements Transport
 {
 
     public function deliver($place)
@@ -15,7 +52,7 @@ class Truck implements Transport
     }
 }
 
-class Ship implements Transport
+class ShipB implements Transport
 {
 
     public function deliver($place)
@@ -25,38 +62,45 @@ class Ship implements Transport
 }
 
 
-abstract class Logistic{
-    abstract public function createTransport();
+abstract class ATransportFactory
+{
+    abstract public function createRoadTransport();
 
-    public function planDelivery($place)
+    abstract public function createSeaTransport();
+}
+
+class TransportFactoryA extends ATransportFactory
+{
+    public function createRoadTransport()
     {
-        $transport = $this->createTransport();
-        $transport->deliver($place);
-        return $transport;
+        return new TruckA();
+    }
+
+    public function createSeaTransport()
+    {
+        return new ShipA();
     }
 }
 
-class RoadLogistic extends Logistic{
-
-    public function createTransport()
+class TransportFactoryB extends ATransportFactory
+{
+    public function createRoadTransport()
     {
-        return new Truck();
+        return new TruckB();
+    }
+
+    public function createSeaTransport()
+    {
+        return new ShipB();
     }
 }
 
-class SeaLogistic extends Logistic{
 
-    public function createTransport()
-    {
-       return new Ship();
-    }
-}
+$trans = new TransportFactoryA();
+
+$truck1 = $trans->createRoadTransport();
+$truck1 = $truck1->deliver('tehran');
 
 
-
-$road = new RoadLogistic();
-$seaL = new SeaLogistic();
-//transports
-$truck1 = $road->planDelivery('tehran');
-$ship1 = $seaL->planDelivery('America');
-
+$ship1 = $trans->createSeaTransport();
+$ship1 = $ship1->deliver('america');
