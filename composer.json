@@ -2,7 +2,7 @@
     "name": "darkness/design-pattern",
     "autoload": {
         "psr-4": {
-            "Darkness\\DesignPattern\\": "src/"
+            "App\\" : "App/"
         }
     },
     "authors": [

@@ -1,85 +1,27 @@
 <?php
 
-interface Gateway
-{
-    public function setPrice($price);
+use App\Publisher;
+use App\Service;
 
-    public function setInfo($info);
+require __DIR__ . '/vendor/autoload.php';
 
-    public function pay();
-}
+$notify = new Publisher();
 
+$mail = new Service('MailObserver',30);
+$clock = new Service('ClockObserver',60);
+$desktop = new Service('DesktopObserver',50);
+$icons = new Service('IconsObserver',20);
 
-class Zarinpal implements Gateway{
+$notify->register($mail);
+$notify->register($clock);
+$notify->register($desktop);
+$notify->register($icons);
 
-    protected $price;
-    protected $info;
+//var_dump($notify->getObservers());
+//die();
 
-    public function setPrice($price)
-    {
-        $this->price = $price;
-    }
-    public function setInfo($info)
-    {
-        $this->info = $info;
-    }
-
-    public function pay()
-    {
-        return ['info'=>$this->info,'price'=>$this->price];
-    }
-}
-
-class Mellat implements Gateway
-{
-    protected $info;
-    protected $price;
-    public function setPrice($price)
-    {
-        $this->price = $price;
-    }
-    public function setInfo($info)
-    {
-        $this->info = $info;
-    }
-
-    public function pay()
-    {
-       return  ['info'=>$this->info,'price'=>$this->price];
-    }
-}
-
-class payment
-{
-
-    protected $gateway;
-
-    public function setGateway(Gateway $gateway)
-    {
-        $this->gateway = $gateway;
-    }
-
-    public function setInfo($info)
-    {
-        $this->gateway->setInfo($info);
-    }
-
-    public function setPrice($price)
-    {
-        $this->gateway->setPrice($price);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function pay()
-    {
-        return $this->gateway->pay();
-    }
-}
-
-$payment = new Payment();
-$payment->setGateway(new Zarinpal());
-$payment->setInfo(['name'=>'mehrdadShirvan']);
-$payment->setPrice(10000);
-var_dump($payment->pay());
+$notify->setEvent('do something ... ');
+//$notify->unregister($mail);
+//$notify->setEvent('something else ...');
+var_dump($notify->getObservers());
+die();
