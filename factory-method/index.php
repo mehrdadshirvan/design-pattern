@@ -14,12 +14,12 @@ class TruckA implements Transport
         return $place;
     }
 
-    public function someMethodA1()
+    public function someMethodA1(): string
     {
         return 'some thing A1';
     }
 
-    public function someMethodA2()
+    public function someMethodA2(): string
     {
         return 'some thing A2';
     }
@@ -32,12 +32,12 @@ class TruckB implements Transport
         return $place;
     }
 
-    public function someMethodB1()
+    public function someMethodB1(): string
     {
         return 'some thing B1';
     }
 
-    public function someMethodB2()
+    public function someMethodB2(): string
     {
         return 'some thing B2';
     }
@@ -71,12 +71,12 @@ abstract class ATransportFactory
 
 class TransportFactoryA extends ATransportFactory
 {
-    public function createRoadTransport()
+    public function createRoadTransport(): TruckA
     {
         return new TruckA();
     }
 
-    public function createSeaTransport()
+    public function createSeaTransport(): ShipA
     {
         return new ShipA();
     }
@@ -84,23 +84,24 @@ class TransportFactoryA extends ATransportFactory
 
 class TransportFactoryB extends ATransportFactory
 {
-    public function createRoadTransport()
+    public function createRoadTransport(): TruckB
     {
         return new TruckB();
     }
 
-    public function createSeaTransport()
+    public function createSeaTransport(): ShipB
     {
         return new ShipB();
     }
 }
 
 
-$trans = new TransportFactoryA();
+$transA = new TransportFactoryA();
+$transB = new TransportFactoryB();
 
-$truck1 = $trans->createRoadTransport();
+$truck1 = $transA->createRoadTransport();
 $truck1 = $truck1->deliver('tehran');
 
 
-$ship1 = $trans->createSeaTransport();
+$ship1 = $transB->createSeaTransport();
 $ship1 = $ship1->deliver('america');
